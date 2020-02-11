@@ -11,6 +11,8 @@ function Signup({ history }) {
     const [bio, setBio] = useState('');
     const [avatar, setAvatar] = useState(null);
 
+    const [error, setError] = useState('');
+
     async function handleSubmit(e) {
         e.preventDefault();
 
@@ -23,9 +25,10 @@ function Signup({ history }) {
 
         const response = await api.post('/users', data);
 
-        const { _id } = response.data;
-
-        history.push(`/home/${_id}`);
+        if(response.data._id){
+            const { _id } = response.data;
+            history.push(`/home/${_id}`);
+        } else { setError(response.data.message); }
     }
 
     return (
@@ -38,6 +41,8 @@ function Signup({ history }) {
                     value={username}
                     onChange={e => setUsername(e.target.value)}
                 />
+
+                <div className="error">{error}</div>
 
                 <input type="text"
                     placeholder="Nome"
@@ -55,7 +60,7 @@ function Signup({ history }) {
 
                 <input type="file" onChange={e => setAvatar(e.target.files[0])} />
 
-                <button type="submit">Enviar</button>
+                <button type="submit">Cadastrar</button>
             </form>
         </div>
     );

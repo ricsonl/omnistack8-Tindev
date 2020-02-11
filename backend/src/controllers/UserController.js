@@ -29,7 +29,7 @@ module.exports = {
         const userExists = await User.findOne({ username: username });
 
         if(userExists){
-            return res.status(400).json({ message: 'Nome de usuário indisponível' });
+            return res.json({ message: 'Nome de usuário indisponível' });
         }
 
         const [file] = avatar.split('.');

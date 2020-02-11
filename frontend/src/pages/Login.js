@@ -8,20 +8,19 @@ import logo from '../assets/logo.svg';
 function Login({ history }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     async function handleLogin(e){
         e.preventDefault();
 
-        const userExists = api.post('/login', { username: username, password: password });
+        const response = await api.post('/login', { username: username, password: password });
 
-        console.log(userExists);
-
-        if (userExists) {
-            const { _id } = userExists;
+        if (response.data._id) {
+            const { _id } = response.data;
             history.push(`/home/${_id}`);
         }
 
-        else history.push('/');
+        else setError(response.data.message);
     }
       
     return (
@@ -40,7 +39,9 @@ function Login({ history }) {
                        onChange={e => setPassword(e.target.value)}
                 />
 
-                <button type="submit">Enviar</button>
+                <div className="error">{error}</div>
+
+                <button type="submit">Entrar</button>
             </form>
         </div>
 );

@@ -15,10 +15,10 @@ module.exports = {
 
                 if(verif){
                     return res.json(userExists);
-                } return res.status(400).json({ message: 'Senha incorreta' });
+                } return res.json({ message: 'Senha incorreta' });
 
-            } return res.status(400).json({ message: 'Nome de usuário inexistente' });
+            } return res.json({ message: 'Nome de usuário inexistente' });
         }
-        return res.status(400).json({ message: 'Preencha todos os campos' });
+        return res.json({ message: 'Preencha todos os campos' });
     },
 };

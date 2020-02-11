@@ -21,6 +21,16 @@
     color: #888;
 }
 
+.signup-container form div.error {
+    margin-top: 7px;
+    color: #111;
+    background: rgba(255,0,55,0.5);
+    border-radius: 4px;
+    width: 85%;
+    align-self: center;
+    text-align: center;
+}
+
 .signup-container form input[type=file] {
     margin: 6px 0 0 20px;
 }
