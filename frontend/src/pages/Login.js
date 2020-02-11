@@ -7,31 +7,39 @@ import logo from '../assets/logo.svg';
 
 function Login({ history }) {
     const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
-    function handleChange(e){ 
-        setUsername(e.target.value);
-    }
-
-    async function handleSubmit(e){
+    async function handleLogin(e){
         e.preventDefault();
 
-        const response = await api.post('/users', {
-            username,
-        });
+        const userExists = api.post('/login', { username: username, password: password });
 
-        const { _id } = response.data;
+        console.log(userExists);
 
-        history.push(`/home/${_id}`);
+        if (userExists) {
+            const { _id } = userExists;
+            history.push(`/home/${_id}`);
+        }
+
+        else history.push('/');
     }
       
     return (
         <div className="login-container">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleLogin}>
                 <img src={logo} alt="Tindi" />
-                <input placeholder="Digite seu usuário no Github" 
+
+                <input type="text"
+                       placeholder="Nome de usuário" 
                        value={username}
-                       onChange={handleChange}
+                       onChange={e => setUsername(e.target.value)}
                 />
+                <input type="password"
+                       placeholder="Senha" 
+                       value={password}
+                       onChange={e => setPassword(e.target.value)}
+                />
+
                 <button type="submit">Enviar</button>
             </form>
         </div>

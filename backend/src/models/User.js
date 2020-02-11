@@ -1,19 +1,25 @@
 const { Schema, model } = require('mongoose');
 
 const UserSchema = new Schema({
-    name: {
+    username: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    password: {
         type: String,
         required: true,
     },
-    gitUser: {
+    name: {
         type: String,
         required: true,
     },
     bio: String,
     avatar: {
         type: String,
-        required:true,
+        required: true,
     },
+
     likes: [{
         type: Schema.Types.ObjectId,
         ref: 'User',

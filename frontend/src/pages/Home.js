@@ -29,7 +29,7 @@ function Home({ match }) {
             headers: { logged: match.params.id },
         });
 
-        setUsers(users.filter(user => user._id != targetId));
+        setUsers(users.filter(user => user._id !== targetId));
     }
 
     async function handleDislike(targetId) {
@@ -37,7 +37,7 @@ function Home({ match }) {
             headers: { logged: match.params.id },
         });
 
-        setUsers(users.filter(user => user._id != targetId));
+        setUsers(users.filter(user => user._id !== targetId));
     }
 
     return (
@@ -49,7 +49,7 @@ function Home({ match }) {
                     <ul>
                         {users.map(user => (
                             <li key={user._id}>
-                                <img src={user.avatar} alt="" />
+                                <img src={`http://localhost:3333/files/${user.avatar}`} alt="" />
                                 <footer>
                                     <strong>{user.name}</strong>
                                     <p>{user.bio}</p>

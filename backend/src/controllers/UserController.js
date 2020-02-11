@@ -1,5 +1,8 @@
-const axios = require('axios');
 const User = require('../models/User');
+const sharp = require('sharp');
+const path = require('path');
+const fs = require('fs');
+const phash = require('password-hash');
 
 module.exports = {
     async index(req, res){
@@ -19,25 +22,36 @@ module.exports = {
     },
 
     async store(req, res){
-        const { username } = req.body;
+        
+        const { username, password, name, bio } = req.body;
+        const { filename: avatar } = req.file;
 
-        const userExists = await User.findOne({ gitUser: username });
+        const userExists = await User.findOne({ username: username });
 
         if(userExists){
-            return res.json(userExists);
+            return res.status(400).json({ message: 'Nome de usuário indisponível' });
         }
 
-        const response = await axios.get(`https://api.github.com/users/${username}`);
+        const [file] = avatar.split('.');
+        const fileName = `${file}.jpg`;
 
-        const { name, bio, avatar_url } = response.data;
+        await sharp(req.file.path)
+            .resize({width: 500, height: 500})
+            .jpeg({ quality: 80 })
+            .toFile(
+                path.resolve(req.file.destination, 'resized', fileName)
+            );
+
+        fs.unlinkSync(req.file.path);
 
         const user = await User.create({
+            username,
+            password: phash.generate(password),
             name,
-            gitUser: username,
             bio,
-            avatar: avatar_url
+            avatar: fileName,
         });
         
         return res.json(user);
-    } 
+    },
 };
