@@ -1,9 +1,38 @@
-import React from 'react';
-import { KeyboardAvoidingView, StyleSheet, Image, TextInput, TouchableOpacity, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
+import { View, KeyboardAvoidingView, StyleSheet, Image, TextInput, TouchableOpacity, Text } from 'react-native';
+
+import api from '../services/api';
 
 import logo from '../assets/logo.png';
 
-function Login(){
+function Login({ navigation }){
+
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        AsyncStorage.getItem('user').then(id => {
+            if (id) {
+                navigation.navigate('Home', { id });
+            }
+        })
+    }, []);
+
+    async function handleLogin(){
+        const response = await api.post('/login', { username: username, password: password });
+
+        if (response.data._id) {
+
+            const { _id } = response.data;
+            await AsyncStorage.setItem('user', _id);
+            navigation.navigate('Home', { _id });
+
+        } else setError(response.data.message);
+    }
+
     return (
         <KeyboardAvoidingView
             behavior="padding" 
@@ -19,19 +48,35 @@ function Login(){
                 placeholder="Nome de usuário"
                 placeholderTextColor="#999" 
                 style={styles.input}
+                onChange={setUsername}
             />
 
             <TextInput 
                 autoCapitalize="none"
                 autoCorrect={false}
+                autoCompleteType="password"
+                secureTextEntry={true}
                 placeholder="Senha"
                 placeholderTextColor="#999" 
                 style={styles.input}
+                onChange={setPassword}
             />
 
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity onPress={handleLogin} style={styles.button}>
                 <Text style={styles.buttonText}>Entrar</Text>
             </TouchableOpacity>
+
+            <View><Text>{error}</Text></View>
+
+            <View style={styles.signup}>
+
+                <Text style={styles.signupText}>Não possui conta?</Text>
+
+                <TouchableOpacity onPress={() => navigation.navigate('Signup')} style={styles.signupButton}>
+                    <Text style={styles.signupButtonText}> Cadastre-se</Text>
+                </TouchableOpacity>
+                
+            </View>
 
         </KeyboardAvoidingView>
     );
@@ -75,7 +120,26 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontWeight: 'bold',
         fontSize: 16,
-    }
+    },
+
+    signup: {
+        flexDirection: 'row',
+        marginTop: 14,
+    },
+
+    signupText: {
+        fontSize: 15,
+        color: '#999',
+    },
+
+    signupButton: {
+        backgroundColor: 'transparent',
+    },
+
+    signupButtonText: {
+        fontSize: 15,
+        color: '#df4723',
+    },
 });
 
 export default Login;
