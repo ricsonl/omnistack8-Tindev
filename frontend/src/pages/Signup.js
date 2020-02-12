@@ -7,6 +7,7 @@ import logo from '../assets/logo.svg';
 
 function Signup({ history }) {
     const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [bio, setBio] = useState('');
     const [avatar, setAvatar] = useState(null);
@@ -19,6 +20,7 @@ function Signup({ history }) {
         const data = new FormData();
 
         data.append('username', username);
+        data.append('password', password);
         data.append('name', name);
         data.append('bio', bio);
         data.append('avatar', avatar);
@@ -26,9 +28,11 @@ function Signup({ history }) {
         const response = await api.post('/users', data);
 
         if(response.data._id){
+
             const { _id } = response.data;
             history.push(`/home/${_id}`);
-        } else { setError(response.data.message); }
+
+        } else setError(response.data.message);
     }
 
     return (
@@ -42,7 +46,11 @@ function Signup({ history }) {
                     onChange={e => setUsername(e.target.value)}
                 />
 
-                <div className="error">{error}</div>
+                <input type="password"
+                    placeholder="Senha"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                />
 
                 <input type="text"
                     placeholder="Nome"
@@ -60,6 +68,8 @@ function Signup({ history }) {
 
                 <input type="file" onChange={e => setAvatar(e.target.files[0])} />
 
+                <div className="error">{error}</div>
+            
                 <button type="submit">Cadastrar</button>
             </form>
         </div>

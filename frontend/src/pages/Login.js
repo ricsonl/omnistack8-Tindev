@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import './Login.css';
 
 import api from '../services/api';
-
 import logo from '../assets/logo.svg';
 
 function Login({ history }) {
@@ -16,11 +17,11 @@ function Login({ history }) {
         const response = await api.post('/login', { username: username, password: password });
 
         if (response.data._id) {
+
             const { _id } = response.data;
             history.push(`/home/${_id}`);
-        }
 
-        else setError(response.data.message);
+        } else setError(response.data.message);
     }
       
     return (
@@ -42,9 +43,12 @@ function Login({ history }) {
                 <div className="error">{error}</div>
 
                 <button type="submit">Entrar</button>
+
+                <p>Não possui conta? <Link to="/signup"> Cadastre-se </Link></p>
+            
             </form>
         </div>
-);
+    );
 }
 
 export default Login;
