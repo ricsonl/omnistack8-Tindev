@@ -9,7 +9,8 @@ const server = express();
 
 mongoose.connect('mongodb+srv://ricsonl:tindev@cluster0-nxomu.mongodb.net/tindev?retryWrites=true&w=majority', {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true,
 });
 
 server.use(cors());
