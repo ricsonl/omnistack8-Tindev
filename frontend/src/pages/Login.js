@@ -44,7 +44,7 @@ function Login({ history }) {
 
                 <button type="submit">Entrar</button>
 
-                <p>Não possui conta? <Link to="/signup"> Cadastre-se </Link></p>
+                <p>Não possui conta? <Link to="/signup" className="signup-link"> Cadastre-se </Link></p>
             
             </form>
         </div>

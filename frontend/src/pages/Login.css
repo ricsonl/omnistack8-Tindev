@@ -57,3 +57,8 @@
     font-size: 15px;
     color: #666;
 }
+
+.login-container form p .signup-link {
+    color: #df4723;
+    text-decoration: none;
+}
