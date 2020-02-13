@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, KeyboardAvoidingView, StyleSheet, Image, TextInput, TouchableOpacity, Text} from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Image, TextInput, TouchableOpacity, Text} from 'react-native';
 
 import ImagePicker from 'react-native-image-picker';
 
@@ -42,10 +42,19 @@ function Signup({ navigation }) {
                     ext = 'jpg';
                 }
 
+                let rot = 0;
+
+                if (upload.originalRotation === 90) {
+                    rot = 90;
+                } else if (upload.originalRotation === 270) {
+                    rot = -90;
+                }
+
                 const image_ = {
                     uri: upload.uri,
                     type: upload.type,
                     name: `${prefix}.${ext}`,
+                    rotation: rot,
                 };
 
                 setAvatar(image_);
@@ -66,7 +75,6 @@ function Signup({ navigation }) {
         const response = await api.post('/users', data);
 
         if (response.data._id) {
-            await AsyncStorage.setItem('user', _id);
             const { _id } = response.data;
             navigation.navigate('Home', { _id });
 
@@ -89,7 +97,8 @@ function Signup({ navigation }) {
                 placeholder="Nome de usuário"
                 placeholderTextColor="#999"
                 style={styles.input}
-                onChange={setUsername}
+                value={username}
+                onChangeText={setUsername}
             />
 
             <TextInput
@@ -100,7 +109,8 @@ function Signup({ navigation }) {
                 placeholder="Senha"
                 placeholderTextColor="#999"
                 style={styles.input}
-                onChange={setPassword}
+                value={password}
+                onChangeText={setPassword}
             />
 
             <TextInput
@@ -109,7 +119,8 @@ function Signup({ navigation }) {
                 placeholder="Nome"
                 placeholderTextColor="#999"
                 style={styles.input}
-                onChange={setName}
+                value={name}
+                onChangeText={setName}
             />
 
             <TextInput
@@ -117,7 +128,8 @@ function Signup({ navigation }) {
                 placeholder="Bio"
                 placeholderTextColor="#999"
                 style={styles.inputBio}
-                onChange={setBio}
+                value={bio}
+                onChangeText={setBio}
             />
 
             <TouchableOpacity style={styles.imageSelectButton} onPress={handleSelectImage}>
@@ -126,7 +138,7 @@ function Signup({ navigation }) {
 
             {preview && <Image style={styles.preview} source={preview} />}
 
-            <View><Text>{error}</Text></View>
+            {error != '' && <Text style={styles.error}>{error}</Text>}
 
             <TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
                 <Text style={styles.submitButtonText}>Cadastrar</Text>
@@ -194,6 +206,18 @@ const styles = StyleSheet.create({
         height: 150,
         alignSelf: 'center',
         borderRadius: 4,
+    },
+
+    error: {
+        backgroundColor: 'rgba(255,0,55,0.5)',
+        fontWeight: 'bold',
+        borderRadius: 4,
+        alignSelf: 'stretch',
+        alignItems: 'center',
+        marginTop: 5,
+        marginBottom: 5,
+        paddingHorizontal: 15,
+        paddingVertical: 4,
     },
 
     submitButton: {

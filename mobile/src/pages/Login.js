@@ -16,7 +16,7 @@ function Login({ navigation }){
     useEffect(() => {
         AsyncStorage.getItem('user').then(id => {
             if (id) {
-                navigation.navigate('Home', { id });
+                navigation.navigate('Home', { user });
             }
         })
     }, []);
@@ -28,7 +28,7 @@ function Login({ navigation }){
 
             const { _id } = response.data;
             await AsyncStorage.setItem('user', _id);
-            navigation.navigate('Home', { _id });
+            navigation.navigate('Home', { user: _id });
 
         } else setError(response.data.message);
     }
@@ -48,7 +48,8 @@ function Login({ navigation }){
                 placeholder="Nome de usuário"
                 placeholderTextColor="#999" 
                 style={styles.input}
-                onChange={setUsername}
+                value={username}
+                onChangeText={setUsername}
             />
 
             <TextInput 
@@ -59,14 +60,15 @@ function Login({ navigation }){
                 placeholder="Senha"
                 placeholderTextColor="#999" 
                 style={styles.input}
-                onChange={setPassword}
+                value={password}
+                onChangeText={setPassword}
             />
+
+            { error!= '' && <Text style={styles.error}>{error}</Text>}
 
             <TouchableOpacity onPress={handleLogin} style={styles.button}>
                 <Text style={styles.buttonText}>Entrar</Text>
             </TouchableOpacity>
-
-            <View><Text>{error}</Text></View>
 
             <View style={styles.signup}>
 
@@ -106,12 +108,24 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
     },
 
+    error: {
+        backgroundColor: 'rgba(255,0,55,0.5)',
+        fontWeight: 'bold',
+        borderRadius: 4,
+        alignSelf: 'stretch',
+        alignItems: 'center',
+        marginTop: 5,
+        marginBottom: 5,
+        paddingHorizontal: 15,
+        paddingVertical: 4,
+    },
+
     button: {
         height: 46,
         alignSelf: 'stretch',
         backgroundColor: '#df4723',
         borderRadius: 4,
-        marginTop: 13,
+        marginTop: 7,
         justifyContent: 'center',
         alignItems: 'center',
     },
