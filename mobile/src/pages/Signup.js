@@ -41,22 +41,15 @@ function Signup({ navigation }) {
                     prefix = new Date().getTime();
                     ext = 'jpg';
                 }
-
+                
                 let rot = 0;
-
-                if (upload.originalRotation === 90) {
-                    rot = 90;
-                } else if (upload.originalRotation === 270) {
-                    rot = -90;
-                }
 
                 const image_ = {
                     uri: upload.uri,
                     type: upload.type,
                     name: `${prefix}.${ext}`,
-                    rotation: rot,
                 };
-
+                
                 setAvatar(image_);
                 setPreview(preview_);
             }
