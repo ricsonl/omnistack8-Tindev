@@ -110,7 +110,6 @@ const styles = StyleSheet.create({
 
     error: {
         backgroundColor: 'rgba(255,0,55,0.5)',
-        fontWeight: 'bold',
         borderRadius: 4,
         alignSelf: 'stretch',
         alignItems: 'center',

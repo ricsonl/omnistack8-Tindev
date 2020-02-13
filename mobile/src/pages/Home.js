@@ -73,7 +73,7 @@ function Login({ navigation }) {
                 ) }
             </View>
 
-            { users.length > 0 && (
+            { users.length > 0 ? (
                 <View style={styles.buttonsContainer}>
                 <TouchableOpacity onPress={handleDislike} style={styles.button}>
                     <Image source={dislike}></Image>
@@ -82,7 +82,9 @@ function Login({ navigation }) {
                     <Image source={like}></Image>
                 </TouchableOpacity>
             </View>
-            ) }
+            ) : (
+                <View />
+            )}
 
         </SafeAreaView>
     );

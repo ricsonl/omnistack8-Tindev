@@ -75,8 +75,9 @@ function Signup({ navigation }) {
         const response = await api.post('/users', data);
 
         if (response.data._id) {
+            
             const { _id } = response.data;
-            navigation.navigate('Home', { _id });
+            navigation.navigate('Home', { user:_id });
 
         } else setError(response.data.message);
     }
@@ -210,7 +211,6 @@ const styles = StyleSheet.create({
 
     error: {
         backgroundColor: 'rgba(255,0,55,0.5)',
-        fontWeight: 'bold',
         borderRadius: 4,
         alignSelf: 'stretch',
         alignItems: 'center',
