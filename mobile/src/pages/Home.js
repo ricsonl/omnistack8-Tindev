@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import io from 'socket.io-client';
 import AsyncStorage from '@react-native-community/async-storage';
-import { Image, Text, View, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image, Text, View, SafeAreaView, StyleSheet, TouchableOpacity, Animated, PanResponder, Dimensions } from 'react-native';
 
 import api from '../services/api';
 
@@ -11,9 +11,33 @@ import dislike from '../assets/dislike.png';
 import itsamatch from '../assets/itsamatch.png';
 
 function Login({ navigation }) {
+    const { height, width } = Dimensions.get('screen');
 
     const [users, setUsers] = useState([]);
     const [matchUser, setMatchUser] = useState(null);
+
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const position = useRef(new Animated.ValueXY()).current;
+    const rot = useRef(position.x.interpolate({
+        inputRange: [-width/2, 0, width/2],
+        outputRange: ['-10deg', '0deg', '10deg'],
+        extrapolate: 'clamp',
+    })).current;
+    const rotateAndTranslate = useRef({
+        transform: [{
+            rotate: rot,
+        },
+        ...position.getTranslateTransform()
+        ]
+    }).current;
+
+    const panResponder = React.useMemo(() => PanResponder.create({
+        onStartShouldSetPanResponder: (evt, gestureState) => true,
+        onPanResponderMove: (evt, gestureState) => {
+            position.setValue({ x: gestureState.dx, y: gestureState.dy });
+        },
+        onPanResponderRelease: (evt, gestureState) => { },
+    }), []);
 
     const id = navigation.getParam('user');
 
@@ -81,16 +105,43 @@ function Login({ navigation }) {
 
             <View style={styles.cardsContainer}>
                 { users.length === 0 ? (
-                    <Text style={styles.empty}>Acabou :(</Text>
+                    <Text style={styles.empty}>Acabou</Text>
                 ) : (
                     users.map((user, index) => (
-                        <View key={user._id} style={[styles.card, { zIndex: users.length - index }]}>
-                            <Image source={{ uri: `http://192.168.0.18:3333/files/${user.avatar}` }} style={styles.avatar} />
-                            <View style={styles.footer}>
-                                <Text style={styles.name}>{user.name}</Text>
-                                <Text style={styles.bio} numberOfLines={3}>{user.bio}</Text>
-                            </View>
-                        </View>
+
+                        index < currentIndex ? null : (
+                            index === currentIndex ? (
+                                <Animated.View
+                                    {...panResponder.panHandlers}
+                                    key={user._id}
+                                    style={[
+                                        rotateAndTranslate,
+                                        styles.card,
+                                        { zIndex: users.length - index }
+                                    ]}
+                                >
+                                    <Image source={{ uri: `http://192.168.0.18:3333/files/${user.avatar}` }} style={styles.avatar} />
+                                    <View style={styles.footer}>
+                                        <Text style={styles.name}>{user.name}</Text>
+                                        <Text style={styles.bio} numberOfLines={3}>{user.bio}</Text>
+                                    </View>
+                                </Animated.View>
+                            ) : (
+                                <Animated.View
+                                    key={user._id}
+                                    style={[
+                                        styles.card,
+                                        { zIndex: users.length - index }
+                                    ]}
+                                >
+                                    <Image source={{ uri: `http://192.168.0.18:3333/files/${user.avatar}` }} style={styles.avatar} />
+                                    <View style={styles.footer}>
+                                        <Text style={styles.name}>{user.name}</Text>
+                                        <Text style={styles.bio} numberOfLines={3}>{user.bio}</Text>
+                                    </View>
+                                </Animated.View>
+                            )
+                        )
                     ))
                 ) }
             </View>
@@ -163,7 +214,6 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-
     },
 
     avatar: {
