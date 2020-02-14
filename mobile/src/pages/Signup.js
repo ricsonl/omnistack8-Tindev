@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
 import { KeyboardAvoidingView, StyleSheet, Image, TextInput, TouchableOpacity, Text} from 'react-native';
 
 import ImagePicker from 'react-native-image-picker';
@@ -17,6 +18,14 @@ function Signup({ navigation }) {
     const [preview, setPreview] = useState(null);
 
     const [error, setError] = useState('');
+
+    useEffect(() => {
+        AsyncStorage.getItem('user').then(id => {
+            if (id) {
+                navigation.navigate('Home', { user });
+            }
+        })
+    }, []);
 
     function handleSelectImage(){
         ImagePicker.showImagePicker({
@@ -70,6 +79,7 @@ function Signup({ navigation }) {
         if (response.data._id) {
             
             const { _id } = response.data;
+            await AsyncStorage.setItem('user', _id);
             navigation.navigate('Home', { user:_id });
 
         } else setError(response.data.message);
