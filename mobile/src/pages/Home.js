@@ -16,13 +16,14 @@ function Login({ navigation }) {
     const [users, setUsers] = useState([]);
     const [matchUser, setMatchUser] = useState(null);
 
-    const [currentIndex, setCurrentIndex] = useState(0);
     const position = useRef(new Animated.ValueXY()).current;
+
     const rot = useRef(position.x.interpolate({
         inputRange: [-width/2, 0, width/2],
         outputRange: ['-10deg', '0deg', '10deg'],
         extrapolate: 'clamp',
     })).current;
+
     const rotateAndTranslate = useRef({
         transform: [{
             rotate: rot,
@@ -31,13 +32,66 @@ function Login({ navigation }) {
         ]
     }).current;
 
+    const likeOpacity = useRef(position.x.interpolate({
+        inputRange: [-width / 2, 0, width / 2],
+        outputRange: [0, 0, 1],
+        extrapolate: 'clamp',
+    })).current;
+
+    const nopeOpacity = useRef(position.x.interpolate({
+        inputRange: [-width / 2, 0, width / 2],
+        outputRange: [1, 0, 0],
+        extrapolate: 'clamp',
+    })).current;
+
+    const nextCardOpacity = useRef(position.x.interpolate({
+        inputRange: [-width / 2, 0, width / 2],
+        outputRange: [1, 0, 1],
+        extrapolate: 'clamp',
+    })).current;
+
+    const nextCardScale = useRef(position.x.interpolate({
+        inputRange: [-width / 2, 0, width / 2],
+        outputRange: [1, 0.85, 1],
+        extrapolate: 'clamp',
+    })).current;
+
     const panResponder = React.useMemo(() => PanResponder.create({
         onStartShouldSetPanResponder: (evt, gestureState) => true,
         onPanResponderMove: (evt, gestureState) => {
             position.setValue({ x: gestureState.dx, y: gestureState.dy });
         },
-        onPanResponderRelease: (evt, gestureState) => { },
+        onPanResponderRelease: async (evt, gestureState) => {
+            if(gestureState.dx > 120){
+
+                Animated.spring(position, {
+                    toValue: { x: width + 100, y: gestureState.dy}
+                }).start(() => {
+                    handleLike();
+                });
+
+            } else if (gestureState.dx < -120) {
+
+                Animated.spring(position, {
+                    toValue: { x: -width - 100, y: gestureState.dy }
+                }).start(() => {
+                    handleDislike();
+                });
+
+            } else {
+
+                Animated.spring(position, {
+                    toValue: { x: 0, y: 0 },
+                    friction: 4
+                }).start();
+
+            }
+        },
     }), []);
+
+    useEffect(() => {
+        position.setValue({ x: 0, y: 0 })
+    }, [users[0]])
 
     const id = navigation.getParam('user');
 
@@ -77,18 +131,15 @@ function Login({ navigation }) {
         await api.post(`/users/${user._id}/like`, null, {
             headers: { logged: id },
         });
-
         setUsers(rest);
     }
 
     async function handleDislike() {
         const [user, ...rest] = users;
 
-
         await api.post(`/users/${user._id}/dislike`, null, {
             headers: { logged: id },
         });
-
         setUsers(rest);
     }
 
@@ -108,42 +159,54 @@ function Login({ navigation }) {
                     <Text style={styles.empty}>Acabou</Text>
                 ) : (
                     users.map((user, index) => (
+                        (index === 0) ? (
+                            <Animated.View
+                                {...panResponder.panHandlers}
+                                key={user._id}
+                                style={[
+                                    rotateAndTranslate,
+                                    styles.card,
+                                    { zIndex: users.length - index }
+                                ]}
+                            >
+                                <Animated.View style={[styles.likeStamp, { zIndex: users.length, opacity: likeOpacity }]}>
+                                    <Text style={styles.likeStampText}>LIKE</Text>
+                                </Animated.View>
 
-                        index < currentIndex ? null : (
-                            index === currentIndex ? (
-                                <Animated.View
-                                    {...panResponder.panHandlers}
-                                    key={user._id}
-                                    style={[
-                                        rotateAndTranslate,
-                                        styles.card,
-                                        { zIndex: users.length - index }
-                                    ]}
-                                >
-                                    <Image source={{ uri: `http://192.168.0.18:3333/files/${user.avatar}` }} style={styles.avatar} />
-                                    <View style={styles.footer}>
-                                        <Text style={styles.name}>{user.name}</Text>
-                                        <Text style={styles.bio} numberOfLines={3}>{user.bio}</Text>
-                                    </View>
+                                <Animated.View style={[styles.nopeStamp, { zIndex: users.length, opacity: nopeOpacity }]}>
+                                    <Text style={styles.nopeStampText}>NOPE</Text>
                                 </Animated.View>
-                            ) : (
-                                <Animated.View
-                                    key={user._id}
-                                    style={[
-                                        styles.card,
-                                        { zIndex: users.length - index }
-                                    ]}
-                                >
-                                    <Image source={{ uri: `http://192.168.0.18:3333/files/${user.avatar}` }} style={styles.avatar} />
-                                    <View style={styles.footer}>
-                                        <Text style={styles.name}>{user.name}</Text>
-                                        <Text style={styles.bio} numberOfLines={3}>{user.bio}</Text>
-                                    </View>
-                                </Animated.View>
-                            )
-                        )
+
+                                <Image source={{ uri: `http://192.168.0.18:3333/files/${user.avatar}` }} style={styles.avatar} />
+                                <View style={styles.footer}>
+                                    <Text style={styles.name}>{user.name}</Text>
+                                    <Text style={styles.bio} numberOfLines={3}>{user.bio}</Text>
+                                </View>
+
+                            </Animated.View>
+                        ) : ( index===1 ? (
+                            <Animated.View
+                                key={user._id}
+                                style={[
+                                    styles.card,
+                                    { 
+                                        zIndex: users.length - index,
+                                        opacity: nextCardOpacity,
+                                        transform: [{scale: nextCardScale}]
+                                    }
+                                ]}
+                            >
+
+                                <Image source={{ uri: `http://192.168.0.18:3333/files/${user.avatar}` }} style={styles.avatar} />
+                                <View style={styles.footer}>
+                                    <Text style={styles.name}>{user.name}</Text>
+                                    <Text style={styles.bio} numberOfLines={3}>{user.bio}</Text>
+                                </View>
+
+                            </Animated.View>
+                        ) : <Text style={styles.empty}>Acabou</Text> )
                     ))
-                ) }
+                )}
             </View>
 
             { users.length > 0 ? (
@@ -160,7 +223,7 @@ function Login({ navigation }) {
             )}
 
             { matchUser && (
-                <View style={[styles.matchContainer, { zIndex: users.length }]}>
+                <View style={[styles.matchContainer, { zIndex: users.length + 1 }]}>
                     <Image source={itsamatch} style={styles.itsamatch} />
 
                     <Image source={{ uri: `http://192.168.0.18:3333/files/${matchUser.avatar}` }} style={styles.matchAvatar}  />
@@ -201,6 +264,38 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         justifyContent: 'center',
         maxHeight: 500,
+    },
+
+    likeStamp: {
+        position: 'absolute',
+        top: 50,
+        left: 40,
+        transform: [{rotate: '-30deg'}],
+    },
+
+    nopeStamp: {
+        position: 'absolute',
+        top: 50,
+        right: 40,
+        transform: [{ rotate: '30deg' }],
+    },
+
+    likeStampText: {
+        borderWidth: 1,
+        borderColor: 'green',
+        color: 'green',
+        fontSize: 32,
+        fontWeight: '800',
+        padding: 10,
+    },
+
+    nopeStampText: {
+        borderWidth: 1,
+        borderColor: 'red',
+        color: 'red',
+        fontSize: 32,
+        fontWeight: '800',
+        padding: 10,
     },
 
     card: {
