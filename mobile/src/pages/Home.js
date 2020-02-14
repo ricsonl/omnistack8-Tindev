@@ -11,17 +11,25 @@ import dislike from '../assets/dislike.png';
 import itsamatch from '../assets/itsamatch.png';
 
 function Login({ navigation }) {
+
     const [users, setUsers] = useState([]);
     const [matchUser, setMatchUser] = useState(null);
 
-
     const id = navigation.getParam('user');
+
+    useEffect(() => {
+        AsyncStorage.getItem('user').then(id => {
+            if (id) {
+                navigation.setParams({user: id});
+            }
+        })
+    }, []);
 
     useEffect(() => {
         async function loadUsers(){
             const response = await api.get('/users', {
                 headers: { logged: id, }
-            })
+            });
             setUsers(response.data);
         }
         loadUsers();
