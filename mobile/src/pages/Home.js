@@ -63,20 +63,19 @@ function Login({ navigation }) {
         },
         onPanResponderRelease: async (evt, gestureState) => {
             if(gestureState.dx > 120){
+                handleLike();
 
                 Animated.spring(position, {
                     toValue: { x: width + 100, y: gestureState.dy}
-                }).start(() => {
-                    handleLike();
-                });
+                }).start();
 
             } else if (gestureState.dx < -120) {
 
+                handleDislike();
+
                 Animated.spring(position, {
                     toValue: { x: -width - 100, y: gestureState.dy }
-                }).start(() => {
-                    handleDislike();
-                });
+                }).start();
 
             } else {
 
@@ -196,7 +195,6 @@ function Login({ navigation }) {
                                     }
                                 ]}
                             >
-
                                 <Image source={{ uri: `http://192.168.0.18:3333/files/${user.avatar}` }} style={styles.avatar} />
                                 <View style={styles.footer}>
                                     <Text style={styles.name}>{user.name}</Text>
