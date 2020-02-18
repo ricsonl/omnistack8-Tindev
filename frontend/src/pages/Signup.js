@@ -58,7 +58,7 @@ function Signup({ history }) {
                     onChange={e => setName(e.target.value)}
                 />
 
-                <input type="text"
+                <textarea type="text"
                     placeholder="Bio"
                     value={bio}
                     onChange={e => setBio(e.target.value)}

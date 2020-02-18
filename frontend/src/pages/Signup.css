@@ -35,7 +35,7 @@
     margin: 6px 0 0 20px;
 }
 
-.signup-container form input[type=text], input[type=password] {
+.signup-container form input[type=text], input[type=password], textarea {
     margin-top: 7px;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -45,7 +45,12 @@
     color: #666;
 }
 
-.signup-container form input::placeholder {
+.signup-container form textarea {
+    height: 100px;
+    padding-top: 13px;
+}
+
+.signup-container form input::placeholder, textarea::placeholder {
     color: #999;
 }
 

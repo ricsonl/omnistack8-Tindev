@@ -24,6 +24,7 @@
 }
 
 .main-container ul li footer {
+    max-width: 100%;
     flex: 1;
     background: #fff;
     border: 1px solid #eee;
@@ -39,10 +40,12 @@
 }
 
 .main-container ul li footer p {
+    max-width: 100%;
     font-size: 14px;
     line-height: 20px;
     color: #999;
     margin-top: 5px;
+    word-wrap: break-word;
 }
 
 .main-container ul li .buttons {
