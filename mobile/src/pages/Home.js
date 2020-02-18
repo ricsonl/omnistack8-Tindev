@@ -46,7 +46,7 @@ function Login({ navigation }) {
 
     const nextCardOpacity = useRef(position.x.interpolate({
         inputRange: [-width / 2, 0, width / 2],
-        outputRange: [1, 0, 1],
+        outputRange: [1, 0.2, 1],
         extrapolate: 'clamp',
     })).current;
 
@@ -61,21 +61,18 @@ function Login({ navigation }) {
         onPanResponderMove: (evt, gestureState) => {
             position.setValue({ x: gestureState.dx, y: gestureState.dy });
         },
-        onPanResponderRelease: async (evt, gestureState) => {
+        onPanResponderRelease: (evt, gestureState) => {
             if(gestureState.dx > 120){
-                handleLike();
-
+                
                 Animated.spring(position, {
                     toValue: { x: width + 100, y: gestureState.dy}
-                }).start();
+                }).start(() => handleLike());
 
             } else if (gestureState.dx < -120) {
-
-                handleDislike();
-
+    
                 Animated.spring(position, {
                     toValue: { x: -width - 100, y: gestureState.dy }
-                }).start();
+                }).start(() => handleDislike());
 
             } else {
 
@@ -86,7 +83,7 @@ function Login({ navigation }) {
 
             }
         },
-    }), []);
+    }), [users[0]]);
 
     useEffect(() => {
         position.setValue({ x: 0, y: 0 })
@@ -155,7 +152,7 @@ function Login({ navigation }) {
 
             <View style={styles.cardsContainer}>
                 { users.length === 0 ? (
-                    <Text style={styles.empty}>Acabou</Text>
+                    <Text style={styles.empty}>Cabou :(</Text>
                 ) : (
                     users.map((user, index) => (
                         (index === 0) ? (
@@ -202,7 +199,7 @@ function Login({ navigation }) {
                                 </View>
 
                             </Animated.View>
-                        ) : <Text style={styles.empty}>Acabou</Text> )
+                        ) : null )
                     ))
                 )}
             </View>
