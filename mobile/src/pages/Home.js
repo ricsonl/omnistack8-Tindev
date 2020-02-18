@@ -152,7 +152,7 @@ function Login({ navigation }) {
 
             <View style={styles.cardsContainer}>
                 { users.length === 0 ? (
-                    <Text style={styles.empty}>Cabou :(</Text>
+                    <Text style={styles.empty}>Fim :/</Text>
                 ) : (
                     users.map((user, index) => (
                         (index === 0) ? (

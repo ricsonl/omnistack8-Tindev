@@ -80,7 +80,7 @@ function Home({ match }) {
                         ))}
                     </ul>
                 ) : (
-                    <div className="empty">Cabou :(</div>
+                    <div className="empty">Fim :/</div>
                 ) }
 
                 { matchUser && (
