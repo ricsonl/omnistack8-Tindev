@@ -128,6 +128,7 @@ function Signup({ navigation }) {
             />
 
             <TextInput
+                multiline
                 autoCapitalize="none"
                 placeholder="Bio"
                 placeholderTextColor="#999"
