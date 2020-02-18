@@ -34,13 +34,13 @@ function Login({ navigation }) {
 
     const likeOpacity = useRef(position.x.interpolate({
         inputRange: [-width / 2, 0, width / 2],
-        outputRange: [0, 0, 1],
+        outputRange: [0, 0, 0.8],
         extrapolate: 'clamp',
     })).current;
 
     const nopeOpacity = useRef(position.x.interpolate({
         inputRange: [-width / 2, 0, width / 2],
-        outputRange: [1, 0, 0],
+        outputRange: [0.8, 0, 0],
         extrapolate: 'clamp',
     })).current;
 
@@ -62,13 +62,13 @@ function Login({ navigation }) {
             position.setValue({ x: gestureState.dx, y: gestureState.dy });
         },
         onPanResponderRelease: (evt, gestureState) => {
-            if(gestureState.dx > 120){
+            if(gestureState.dx > 125){
                 
                 Animated.spring(position, {
                     toValue: { x: width + 100, y: gestureState.dy}
                 }).start(() => handleLike());
 
-            } else if (gestureState.dx < -120) {
+            } else if (gestureState.dx < -125) {
     
                 Animated.spring(position, {
                     toValue: { x: -width - 100, y: gestureState.dy }
@@ -262,35 +262,43 @@ const styles = StyleSheet.create({
     },
 
     likeStamp: {
+        width: 110,
         position: 'absolute',
-        top: 50,
-        left: 40,
+        top: 40,
+        left: 35,
         transform: [{rotate: '-30deg'}],
     },
 
     nopeStamp: {
+        width: 110,
         position: 'absolute',
-        top: 50,
-        right: 40,
+        top: 40,
+        right: 35,
         transform: [{ rotate: '30deg' }],
     },
 
     likeStampText: {
-        borderWidth: 1,
-        borderColor: 'green',
-        color: 'green',
+        paddingHorizontal: 0,
+        borderWidth: 4,
+        borderRadius: 6,
+        borderColor: '#5c7',
+        color: '#5c7',
         fontSize: 32,
-        fontWeight: '800',
+        fontWeight: 'bold',
         padding: 10,
+        textAlign: 'center',
     },
 
     nopeStampText: {
-        borderWidth: 1,
-        borderColor: 'red',
-        color: 'red',
+        paddingHorizontal: 0,
+        borderWidth: 4,
+        borderRadius: 6,
+        borderColor: '#d22',
+        color: '#d22',
         fontSize: 32,
-        fontWeight: '800',
+        fontWeight: 'bold',
         padding: 10,
+        textAlign: 'center',
     },
 
     card: {
