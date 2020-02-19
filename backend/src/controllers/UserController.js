@@ -32,7 +32,7 @@ module.exports = {
             const userExists = await User.findOne({ username: username });
 
             if(userExists){
-                return res.json({ message: 'Nome de usuário indisponível' });
+                return res.json({ message: 'Username unavailable' });
             }
 
             const [file] = avatar.split('.');
@@ -56,6 +56,6 @@ module.exports = {
             });
             
             return res.json(user);
-        } return res.json({ message: 'Preencha todos os campos' });
+        } return res.json({ message: 'Please, fill in all fields' });
     },
 };

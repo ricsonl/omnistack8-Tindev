@@ -17,10 +17,10 @@ module.exports = {
 
                     return res.json(userExists);
 
-                } return res.json({ message: 'Senha incorreta' });
+                } return res.json({ message: 'Wrong password' });
 
-            } return res.json({ message: 'Nome de usuário inexistente' });
+            } return res.json({ message: 'This user does not exist' });
         }
-        return res.json({ message: 'Preencha todos os campos' });
+        return res.json({ message: 'Please, fill in all fields' });
     },
 };

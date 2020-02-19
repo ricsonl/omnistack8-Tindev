@@ -41,19 +41,19 @@ function Signup({ history }) {
                 <img src={logo} alt="Tindi" />
 
                 <input type="text"
-                    placeholder="Nome de usuário"
+                    placeholder="Username"
                     value={username}
                     onChange={e => setUsername(e.target.value)}
                 />
 
                 <input type="password"
-                    placeholder="Senha"
+                    placeholder="Password"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                 />
 
                 <input type="text"
-                    placeholder="Nome"
+                    placeholder="Name"
                     value={name}
                     onChange={e => setName(e.target.value)}
                 />
@@ -64,13 +64,13 @@ function Signup({ history }) {
                     onChange={e => setBio(e.target.value)}
                 />
 
-                <p>Escolha uma foto de perfil</p>
+                <p>Choose a profile picture</p>
 
                 <input type="file" onChange={e => setAvatar(e.target.files[0])} />
 
                 <div className="error">{error}</div>
             
-                <button type="submit">Cadastrar</button>
+                <button type="submit">Register</button>
             </form>
         </div>
     );

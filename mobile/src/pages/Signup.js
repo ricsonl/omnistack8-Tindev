@@ -98,7 +98,7 @@ function Signup({ navigation }) {
             <TextInput
                 autoCapitalize="none"
                 autoCorrect={false}
-                placeholder="Nome de usuário"
+                placeholder="Username"
                 placeholderTextColor="#999"
                 style={styles.input}
                 value={username}
@@ -110,7 +110,7 @@ function Signup({ navigation }) {
                 autoCorrect={false}
                 autoCompleteType="password"
                 secureTextEntry={true}
-                placeholder="Senha"
+                placeholder="Password"
                 placeholderTextColor="#999"
                 style={styles.input}
                 value={password}
@@ -120,7 +120,7 @@ function Signup({ navigation }) {
             <TextInput
                 autoCapitalize="none"
                 autoCorrect={false}
-                placeholder="Nome"
+                placeholder="Name"
                 placeholderTextColor="#999"
                 style={styles.input}
                 value={name}
@@ -138,7 +138,7 @@ function Signup({ navigation }) {
             />
 
             <TouchableOpacity style={styles.imageSelectButton} onPress={handleSelectImage}>
-                <Text style={styles.imageSelectButtonText}> Escolha uma foto de perfil </Text>
+                <Text style={styles.imageSelectButtonText}> Choose a profile picture </Text>
             </TouchableOpacity>
 
             {preview && <Image style={styles.preview} source={preview} />}
@@ -146,7 +146,7 @@ function Signup({ navigation }) {
             {error != '' && <Text style={styles.error}>{error}</Text>}
 
             <TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
-                <Text style={styles.submitButtonText}>Cadastrar</Text>
+                <Text style={styles.submitButtonText}>Register</Text>
             </TouchableOpacity>
 
         </KeyboardAvoidingView>

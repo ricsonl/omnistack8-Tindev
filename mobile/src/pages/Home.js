@@ -152,7 +152,7 @@ function Login({ navigation }) {
 
             <View style={styles.cardsContainer}>
                 { users.length === 0 ? (
-                    <Text style={styles.empty}>Fim :/</Text>
+                    <Text style={styles.empty}>Nothing for now :/</Text>
                 ) : (
                     users.map((user, index) => (
                         (index === 0) ? (
@@ -226,7 +226,7 @@ function Login({ navigation }) {
                     <Text numberOfLines={3} style={styles.matchBio}>{matchUser.bio}</Text>
 
                     <TouchableOpacity onPress={() => setMatchUser(null)} >
-                        <Text style={styles.matchCloseText}>FECHAR</Text>
+                        <Text style={styles.matchCloseText}>CLOSE</Text>
                     </TouchableOpacity>
                 </View>
             ) }

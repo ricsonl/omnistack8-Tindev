@@ -45,7 +45,7 @@ function Login({ navigation }){
             <TextInput 
                 autoCapitalize="none"
                 autoCorrect={false}
-                placeholder="Nome de usuário"
+                placeholder="Username"
                 placeholderTextColor="#999" 
                 style={styles.input}
                 value={username}
@@ -57,7 +57,7 @@ function Login({ navigation }){
                 autoCorrect={false}
                 autoCompleteType="password"
                 secureTextEntry={true}
-                placeholder="Senha"
+                placeholder="Password"
                 placeholderTextColor="#999" 
                 style={styles.input}
                 value={password}
@@ -67,15 +67,15 @@ function Login({ navigation }){
             { error!= '' && <Text style={styles.error}>{error}</Text>}
 
             <TouchableOpacity onPress={handleLogin} style={styles.button}>
-                <Text style={styles.buttonText}>Entrar</Text>
+                <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
 
             <View style={styles.signup}>
 
-                <Text style={styles.signupText}>Não possui conta?</Text>
+                <Text style={styles.signupText}>Don't have an account?</Text>
 
                 <TouchableOpacity onPress={() => navigation.navigate('Signup')} style={styles.signupButton}>
-                    <Text style={styles.signupButtonText}> Cadastre-se</Text>
+                    <Text style={styles.signupButtonText}> Register</Text>
                 </TouchableOpacity>
                 
             </View>

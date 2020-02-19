@@ -30,21 +30,21 @@ function Login({ history }) {
                 <img src={logo} alt="Tindi" />
 
                 <input type="text"
-                       placeholder="Nome de usuário" 
+                       placeholder="Username" 
                        value={username}
                        onChange={e => setUsername(e.target.value)}
                 />
                 <input type="password"
-                       placeholder="Senha" 
+                       placeholder="Password" 
                        value={password}
                        onChange={e => setPassword(e.target.value)}
                 />
 
                 <div className="error">{error}</div>
 
-                <button type="submit">Entrar</button>
+                <button type="submit">Login</button>
 
-                <p>Não possui conta? <Link to="/signup" className="signup-link"> Cadastre-se </Link></p>
+                <p>Don't have an account? <Link to="/signup" className="signup-link"> Register </Link></p>
             
             </form>
         </div>

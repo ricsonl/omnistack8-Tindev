@@ -80,7 +80,7 @@ function Home({ match }) {
                         ))}
                     </ul>
                 ) : (
-                    <div className="empty">Fim :/</div>
+                    <div className="empty">Nothing for now :/</div>
                 ) }
 
                 { matchUser && (
@@ -91,7 +91,7 @@ function Home({ match }) {
                         <strong>{matchUser.name}</strong>
                         <p>{matchUser.bio}</p>
                         
-                        <button type="button" onClick={ () => setMatchUser(null) } >FECHAR</button>
+                        <button type="button" onClick={ () => setMatchUser(null) } >CLOSE</button>
                     </div>
                 ) }
         </div>
