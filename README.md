@@ -5,4 +5,5 @@
 
 <br>
 
-<h3> &nbsp&nbsp&nbsp&nbsp Clone do aplicativo Tinder, baseado principalmente nas aulas da Semana Omnistack #8 da <a href="https://rocketseat.com.br/">Rocketseat</a> </h3>
+<h2> Clone do aplicativo Tinder,</h2>
+<h3> baseado principalmente nas aulas da Semana Omnistack #8 da <a href="https://rocketseat.com.br/">Rocketseat</a> </h3>
