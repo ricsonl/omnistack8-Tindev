@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/ricsonl/omnistack8-Tindi/blob/master/etc/logo%403x.png" />
+  <img src="https://github.com/ricsonl/omnistack8-Tindi/blob/master/readmefiles/logo%403x.png" />
 </p> 
 
 <br>
