@@ -3,4 +3,4 @@
   <img height="420" src="https://github.com/ricsonl/omnistack8-Tindi/blob/master/readmefiles/tindi-previeww.png" />
 </p> 
 
-**Clone do aplicativo Tinder, baseado principalmente nas aulas da Semana Omnistack #8 da [Rocketseat](https://rocketseat.com.br/")**
+**Clone of Tinder app, based mainly on lessons from a [Rocketseat](https://rocketseat.com.br/")'s event (Semana Omnistack #8)**
